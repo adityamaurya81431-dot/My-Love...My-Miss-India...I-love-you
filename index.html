@@ -16,24 +16,22 @@ body { margin:0; font-family:'Segoe UI',sans-serif; background:black; color:whit
 /* FULLSCREEN SLIDESHOW */
 .slideshow-container { position:fixed; top:0; left:0; width:100vw; height:100vh; overflow:hidden; z-index:-1; }
 .slide { width:100vw; height:100vh; object-fit:cover; position:absolute; opacity:0; transform:scale(1); transition:opacity 2s ease-in-out, transform 6s linear; }
-.slide.active { opacity:1; transform:scale(1.1); }
+.slide.active { opacity:1; transform:scale(1.08); }
 
 /* FLOAT HEARTS */
 .heart { position:fixed; bottom:-50px; font-size:20px; animation:floatUp 6s linear infinite; }
 @keyframes floatUp { from{transform:translateY(0);opacity:1;} to{transform:translateY(-110vh);opacity:0;} }
 
-.overlay-text { margin-top:100px; text-shadow:0 0 20px rgba(0,0,0,0.8); }
+.overlay-text { margin-top:100px; text-shadow:0 0 20px rgba(0,0,0,0.8); position:relative; z-index:5; }
 button { padding:12px 25px; font-size:18px; border:none; border-radius:10px; background:#ff4b7d; color:white; cursor:pointer; margin:10px; }
 button:hover { transform:scale(1.05); }
 
 #celebration { font-size:42px; animation:pop 1s infinite alternate; }
 @keyframes pop { from{transform:scale(1);} to{transform:scale(1.2);} }
 
-/* FIREWORK */
-.firework { position:fixed; width:5px; height:5px; border-radius:50%; animation:firework 1.5s ease-out forwards; }
+.firework { position:fixed; width:6px; height:6px; border-radius:50%; animation:firework 1.5s ease-out forwards; }
 @keyframes firework { to { transform:translate(var(--x),var(--y)); opacity:0; } }
 
-/* TYPE TEXT */
 #typingMessage { font-size:28px; margin-top:30px; }
 </style>
 </head>
@@ -56,7 +54,7 @@ button:hover { transform:scale(1.05); }
 <div id="lovePortal" class="hidden">
 
 <div class="slideshow-container">
-<img class="slide" src="WhatsApp Image 2026-01-29 at 4.36.49 PM.jpeg">
+<img class="slide active" src="WhatsApp Image 2026-01-29 at 4.36.49 PM.jpeg">
 <img class="slide" src="WhatsApp Image 2026-02-02 at 9.31.17 PM.jpeg">
 <img class="slide" src="WhatsApp Image 2026-02-02 at 9.45.32 PM.jpeg">
 <img class="slide" src="WhatsApp Image 2025-12-31 at 3.43.21 PM (1).jpeg">
@@ -98,16 +96,26 @@ setTimeout(()=>{ document.getElementById("introScreen").style.display="none"; },
 function checkPassword(){
  if(document.getElementById("password").value==="04102007"){
  document.getElementById("loginBox").style.display="none";
- document.getElementById("lovePortal").classList.remove("hidden");
+ document.getElementById("lovePortal
+t").classList.remove("hidden");
  startSongFade(); startSlideshow(); startHearts(); }
  else alert("Wrong Password Love 😢"); }
 
 function startSongFade(){ let song=document.getElementById("loveSong"); song.volume=0; song.play(); let fade=setInterval(()=>{ if(song.volume<1) song.volume+=0.05; else clearInterval(fade); },300); }
 
 let slideIndex=0;
-function startSlideshow(){ const slides=document.getElementsByClassName("slide"); function showSlides(){ for(let s of slides) s.classList.remove("active"); slideIndex++; if(slideIndex>slides.length) slideIndex=1; slides[slideIndex-1].classList.add("active"); setTimeout(showSlides,4000);} showSlides(); }
+function startSlideshow(){
+ const slides=document.querySelectorAll('.slide');
+ if(slides.length===0) return;
+ 
+ setInterval(()=>{
+ slides.forEach(s=>s.classList.remove('active'));
+ slideIndex=(slideIndex+1)%slides.length;
+ slides[slideIndex].classList.add('active');
+ },4000);
+}
 
-function startHearts(){ setInterval(()=>{ let h=document.createElement("div"); h.className="heart"; h.innerHTML="💖"; h.style.left=Math.random()*100+"vw"; h.style.fontSize=(Math.random()*20+20)+"px"; document.body.appendChild(h); setTimeout(()=>h.remove(),6000); },500); }
+function startHearts(){ setInterval(()=>{ let h=document.createElement("div"); h.className="heart"; h.innerHTML="💖"; h.style.left=Math.random()*100+"vw"; h.style.fontSize=(Math.random()*20+20)+"px"; document.body.appendChild(h); setTimeout(()=>h.remove(),6000); },600); }
 
 function showProposal(){ document.getElementById("proposal").classList.remove("hidden"); typeMessage("You are my today, tomorrow and forever ❤️"); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); }
 
@@ -115,11 +123,10 @@ function moveNo(){ let b=document.getElementById("noBtn"); b.style.position="abs
 
 function sayYes(){ document.getElementById("celebration").classList.remove("hidden"); startFireworks(); }
 
-function startFireworks(){ for(let i=0;i<50;i++){ let f=document.createElement("div"); f.className="firework"; f.style.background=`hsl(${Math.random()*360},100%,50%)`; f.style.left=Math.random()*100+"vw"; f.style.top=Math.random()*100+"vh"; f.style.setProperty("--x",(Math.random()*200-100)+"px"); f.style.setProperty("--y",(Math.random()*200-100)+"px"); document.body.appendChild(f); setTimeout(()=>f.remove(),1500); }}
+function startFireworks(){ for(let i=0;i<60;i++){ let f=document.createElement("div"); f.className="firework"; f.style.background=`hsl(${Math.random()*360},100%,50%)`; f.style.left=Math.random()*100+"vw"; f.style.top=Math.random()*100+"vh"; f.style.setProperty("--x",(Math.random()*200-100)+"px"); f.style.setProperty("--y",(Math.random()*200-100)+"px"); document.body.appendChild(f); setTimeout(()=>f.remove(),1500); }}
 
-function typeMessage(text){ let el=document.getElementById("typingMessage"); let i=0; let interval=setInterval(()=>{ el.innerHTML+=text[i]; i++; if(i>=text.length) clearInterval(interval); },50); }
+function typeMessage(text){ let el=document.getElementById("typingMessage"); el.innerHTML=""; let i=0; let interval=setInterval(()=>{ el.innerHTML+=text[i]; i++; if(i>=text.length) clearInterval(interval); },50); }
 
-/* SECRET TAP */
 let tapCount=0;
 document.body.addEventListener("click",()=>{ tapCount++; if(tapCount===5){ alert("Secret Message: I Love You Beyond Words ❤️"); tapCount=0; }});
 
@@ -127,3 +134,4 @@ document.body.addEventListener("click",()=>{ tapCount++; if(tapCount===5){ alert
 
 </body>
 </html>
+
