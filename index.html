@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Portal ❤️</title>
+
+<style>
+body { margin:0; font-family:'Segoe UI',sans-serif; background:black; color:white; text-align:center; overflow-x:hidden; }
+.hidden { display:none; }
+
+/* INTRO */
+#introScreen { position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:999; animation:fadeOut 4s forwards; animation-delay:3s; }
+@keyframes fadeOut { to { opacity:0; visibility:hidden; } }
+
+/* FULLSCREEN SLIDESHOW */
+.slideshow-container { position:fixed; top:0; left:0; width:100vw; height:100vh; overflow:hidden; z-index:-1; }
+.slide { width:100vw; height:100vh; object-fit:cover; position:absolute; opacity:0; transform:scale(1); transition:opacity 2s ease-in-out, transform 6s linear; }
+.slide.active { opacity:1; transform:scale(1.1); }
+
+/* FLOAT HEARTS */
+.heart { position:fixed; bottom:-50px; font-size:20px; animation:floatUp 6s linear infinite; }
+@keyframes floatUp { from{transform:translateY(0);opacity:1;} to{transform:translateY(-110vh);opacity:0;} }
+
+.overlay-text { margin-top:100px; text-shadow:0 0 20px rgba(0,0,0,0.8); }
+button { padding:12px 25px; font-size:18px; border:none; border-radius:10px; background:#ff4b7d; color:white; cursor:pointer; margin:10px; }
+button:hover { transform:scale(1.05); }
+
+#celebration { font-size:42px; animation:pop 1s infinite alternate; }
+@keyframes pop { from{transform:scale(1);} to{transform:scale(1.2);} }
+
+/* FIREWORK */
+.firework { position:fixed; width:5px; height:5px; border-radius:50%; animation:firework 1.5s ease-out forwards; }
+@keyframes firework { to { transform:translate(var(--x),var(--y)); opacity:0; } }
+
+/* TYPE TEXT */
+#typingMessage { font-size:28px; margin-top:30px; }
+</style>
+</head>
+
+<body>
+
+<div id="introScreen">
+<h1>❤️ A Special Surprise For You ❤️</h1>
+<h2>Loading Love Portal...</h2>
+</div>
+
+<div id="loginBox">
+<h2>Enter Your Birthday Date Love 💖</h2>
+<p>(ddmmyyyy format)</p>
+<input type="password" id="password">
+<br>
+<button onclick="checkPassword()">Enter Portal</button>
+</div>
+
+<div id="lovePortal" class="hidden">
+
+<div class="slideshow-container">
+<img class="slide" src="WhatsApp Image 2026-01-29 at 4.36.49 PM.jpeg">
+<img class="slide" src="WhatsApp Image 2026-02-02 at 9.31.17 PM.jpeg">
+<img class="slide" src="WhatsApp Image 2026-02-02 at 9.45.32 PM.jpeg">
+<img class="slide" src="WhatsApp Image 2025-12-31 at 3.43.21 PM (1).jpeg">
+<img class="slide" src="WhatsApp Image 2025-12-31 at 3.42.40 PM.jpeg">
+<img class="slide" src="WhatsApp Image 2026-01-21 at 1.13.06 AM.jpeg">
+<img class="slide" src="WhatsApp Image 2026-01-21 at 1.16.53 AM.jpeg">
+<img class="slide" src="WhatsApp Image 2026-01-21 at 1.27.53 AM.jpeg">
+<img class="slide" src="WhatsApp Image 2025-12-31 at 3.42.44 PM.jpeg">
+<img class="slide" src="WhatsApp Image 2026-01-29 at 10.27.07 AM.jpeg">
+</div>
+
+<div class="overlay-text">
+<h1>❤️ This one for You Miss India ❤️</h1>
+<p style="font-size:22px">In your smile I see my forever,<br>In your eyes my dreams reside,<br>If love has a pure definition,<br>It is simply YOU by my side. 💕</p>
+<h2>Lets see my Miss India...My Love... Nandini 💖</h2>
+<h3>From Your Love ~ Adityaa ❤️</h3>
+<button onclick="showProposal()">Next ❤️</button>
+</div>
+
+</div>
+
+<div id="proposal" class="hidden">
+<h1>Will You Be Mine Forever? 💍</h1>
+<button onclick="sayYes()">Yes 💖</button>
+<button id="noBtn" onmouseover="moveNo()">No 😢</button>
+<div id="typingMessage"></div>
+</div>
+
+<div id="celebration" class="hidden">🎉 Hurrahh!!! Thanku Love 💖 🎉</div>
+
+<audio id="loveSong" loop>
+<source src="him-and-i.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+setTimeout(()=>{ document.getElementById("introScreen").style.display="none"; },7000);
+
+function checkPassword(){
+ if(document.getElementById("password").value==="04102007"){
+ document.getElementById("loginBox").style.display="none";
+ document.getElementById("lovePortal").classList.remove("hidden");
+ startSongFade(); startSlideshow(); startHearts(); }
+ else alert("Wrong Password Love 😢"); }
+
+function startSongFade(){ let song=document.getElementById("loveSong"); song.volume=0; song.play(); let fade=setInterval(()=>{ if(song.volume<1) song.volume+=0.05; else clearInterval(fade); },300); }
+
+let slideIndex=0;
+function startSlideshow(){ const slides=document.getElementsByClassName("slide"); function showSlides(){ for(let s of slides) s.classList.remove("active"); slideIndex++; if(slideIndex>slides.length) slideIndex=1; slides[slideIndex-1].classList.add("active"); setTimeout(showSlides,4000);} showSlides(); }
+
+function startHearts(){ setInterval(()=>{ let h=document.createElement("div"); h.className="heart"; h.innerHTML="💖"; h.style.left=Math.random()*100+"vw"; h.style.fontSize=(Math.random()*20+20)+"px"; document.body.appendChild(h); setTimeout(()=>h.remove(),6000); },500); }
+
+function showProposal(){ document.getElementById("proposal").classList.remove("hidden"); typeMessage("You are my today, tomorrow and forever ❤️"); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); }
+
+function moveNo(){ let b=document.getElementById("noBtn"); b.style.position="absolute"; b.style.left=Math.random()*80+"%"; b.style.top=Math.random()*80+"%"; }
+
+function sayYes(){ document.getElementById("celebration").classList.remove("hidden"); startFireworks(); }
+
+function startFireworks(){ for(let i=0;i<50;i++){ let f=document.createElement("div"); f.className="firework"; f.style.background=`hsl(${Math.random()*360},100%,50%)`; f.style.left=Math.random()*100+"vw"; f.style.top=Math.random()*100+"vh"; f.style.setProperty("--x",(Math.random()*200-100)+"px"); f.style.setProperty("--y",(Math.random()*200-100)+"px"); document.body.appendChild(f); setTimeout(()=>f.remove(),1500); }}
+
+function typeMessage(text){ let el=document.getElementById("typingMessage"); let i=0; let interval=setInterval(()=>{ el.innerHTML+=text[i]; i++; if(i>=text.length) clearInterval(interval); },50); }
+
+/* SECRET TAP */
+let tapCount=0;
+document.body.addEventListener("click",()=>{ tapCount++; if(tapCount===5){ alert("Secret Message: I Love You Beyond Words ❤️"); tapCount=0; }});
+
+</script>
+
+</body>
+</html>
